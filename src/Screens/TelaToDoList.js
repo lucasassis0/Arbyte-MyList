@@ -6,51 +6,12 @@ import { ScrollView, TouchableHighlight, TextInput, TouchableOpacity } from "rea
 import logo from '../img/logo_size.jpg'
 import plus from '../img/Plus.png'
 import Botao from '../Components/Botao'
+import Input from "../Components/Input"
+import Card from '../Components/Card'
 
 export default function TelaLogin({ navigation }) {
-    const [checkbox, setCheckbox] = useState(false)
     const [tarefa, setTarefa] = useState('')
-
-    const alteraEstadoCheckbox = () => {
-        setCheckbox(!checkbox)
-        if (checkbox) {
-            styles.checkboxBackground = {
-                height: 20,
-                width: 20,
-                backgroundColor: 'green'
-            }
-            styles.tarefa = {
-                paddingLeft: 20,
-                fontSize: 18,
-                textAlign: "center",
-                color: 'gray'
-            }
-        } else {
-            styles.checkboxBackground = {
-                height: 20,
-                width: 20,
-                backgroundColor: 'white'
-            }
-            styles.tarefa = {
-                paddingLeft: 20,
-                fontSize: 18,
-                textAlign: "center",
-                color: 'black'
-            }
-        }
-    }
-
-    const Card = (props) => {
-        return (
-            <View style={styles.card}>
-                <TouchableHighlight style={styles.checkbox} onPress={alteraEstadoCheckbox}>
-                    <View style={styles.checkboxBackground} />
-                </TouchableHighlight>
-                <Text style={styles.tarefa} >{props.tarefa}</Text>
-            </View>
-        )
-    }
-
+    
     return (
         <ScrollView style={styles.container}>
             <View style={styles.containerLogoApresentacao}>
@@ -60,8 +21,7 @@ export default function TelaLogin({ navigation }) {
                 </Text>
             </View>
             <View style={styles.containerInputAdicionaTarefa}>
-                <TextInput
-                    style={styles.inputTarefa}
+                <Input
                     placeholder={'   Insira uma tarefa'}
                     value={tarefa}
                     onChangeText={tarefa => setTarefa(tarefa)}
@@ -107,14 +67,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center"
     },
-    inputTarefa: {
-        width: 250,
-        height: 30,
-        borderWidth: 1,
-        borderColor: "#17E9E0",
-        borderRadius: 30,
-        margin: 10,
-    },
     clickAdicionar: {
         shadowOffset: {
             width: 0,
@@ -130,29 +82,11 @@ const styles = StyleSheet.create({
     },
     containerTarefas: {
         flex: 3,
-        marginLeft: 50,
+        marginLeft: 35,
+        marginRight: 60
     },
     scrollAtividades: {
         height: 250,
-    },
-    card: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-    },
-    checkbox: {
-        borderWidth: 1,
-        borderColor: 'gray',
-    },
-    checkboxBackground: {
-        height: 20,
-        width: 20,
-        backgroundColor: 'white'
-    },
-    tarefa: {
-        paddingLeft: 20,
-        fontSize: 18,
-        textAlign: "center",
-        color: 'black'
     },
     containerBotao: {
         flex: 1,

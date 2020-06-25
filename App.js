@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"login"} screenOptions={{ headerShown: false}}>
+      <Stack.Navigator initialRouteName={"lista"} screenOptions={{ headerShown: false}}>
         <Stack.Screen name="login" component={TelaLogin}/>
         <Stack.Screen name="cadastro" component={TelaCadastro}/>
         <Stack.Screen name="lista" component={TelaToDoList}/>

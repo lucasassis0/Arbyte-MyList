@@ -4,6 +4,7 @@ import { View, StyleSheet, SafeAreaView, Image } from "react-native"
 import logo from '../img/logo_size.jpg'
 import { TextInput } from "react-native-gesture-handler"
 import Botao from '../Components/Botao'
+import Input from "../Components/Input"
 
 export default function TelaCadastro({ navigation }) {
     const [email, setEmail] = useState('')
@@ -15,13 +16,13 @@ export default function TelaCadastro({ navigation }) {
                 <Image style={styles.logo} source={logo} />
             </View>
             <View style={styles.containerInputs}>
-                <TextInput style={styles.inputNome}
+                <Input
                     placeholder='   Digite o seu nome'
                     placeholderTextColor='gray'
                     value={nome}
                     onChangeText={ nome => { setNome(nome) }}
                 />
-                <TextInput style={styles.inputEmail}
+                <Input
                     placeholder='   Digite o seu email'
                     placeholderTextColor='gray'
                     value={email}
@@ -53,22 +54,6 @@ const styles = StyleSheet.create({
         flex: 2,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    inputEmail: {
-        width: 250,
-        height: 30,
-        borderWidth: 1,
-        borderColor: "#17E9E0",
-        borderRadius: 30,
-        margin: 10,
-    },
-    inputNome: {
-        width: 250,
-        height: 30,
-        borderWidth: 1,
-        borderColor: "#17E9E0",
-        borderRadius: 30,
-        margin: 10,
     },
     containerBotao: {
         flex: 1,
