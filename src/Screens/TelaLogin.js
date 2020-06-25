@@ -16,7 +16,6 @@ export default function TelaLogin({ navigation }) {
             <View style={styles.containerInputs}>
                 <Input
                     placeholder='   Entre com o seu e-mail'
-                    placeholderTextColor='gray'
                     value={email}
                     keyboardType={'email-address'}
                     onChangeText={email => { setEmail(email) }}

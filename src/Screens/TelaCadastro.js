@@ -18,13 +18,11 @@ export default function TelaCadastro({ navigation }) {
             <View style={styles.containerInputs}>
                 <Input
                     placeholder='   Digite o seu nome'
-                    placeholderTextColor='gray'
                     value={nome}
                     onChangeText={ nome => { setNome(nome) }}
                 />
                 <Input
                     placeholder='   Digite o seu email'
-                    placeholderTextColor='gray'
                     value={email}
                     keyboardType={'email-address'}
                     onChangeText={ email => { setEmail(email) }}
