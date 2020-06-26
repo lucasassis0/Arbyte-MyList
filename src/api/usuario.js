@@ -7,7 +7,4 @@ export function cadastrar(nome, email) {
             email: email,
         }
     )
-        .catch(erro => {
-            console.log("erro: ", erro.response.data);
-        })
 }

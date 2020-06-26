@@ -11,14 +11,19 @@ export default function TelaCadastro({ navigation }) {
     const [nome, setNome] = useState('')
 
     const fazerCadastro = () => {
-        cadastrar(nome, email)
-            .then(() => {
-                Alert.alert('Usuário cadastrado com sucesso!')
-                navigation.navigate('login')
-            })
-            .catch(() => {
-                Alert.alert('Erro ao cadastrar.')
-            })
+        if (nome !== '' && email !== '') {
+            cadastrar(nome, email)
+                .then(() => {
+                    Alert.alert('Usuário cadastrado com sucesso!')
+                    navigation.navigate('login')
+                })
+                .catch(erro => {
+                    console.log('Erro: ', erro.response.data)
+                    Alert.alert("Erro ao cadastrar")
+                })
+        }else{
+            Alert.alert("Favor preencher todos os campos.")
+        }
     }
 
     return (
@@ -40,7 +45,7 @@ export default function TelaCadastro({ navigation }) {
                 />
             </View>
             <View style={styles.containerBotao}>
-                <Botao title={'Cadastrar'} onPress={() => { fazerCadastro }} />
+                <Botao title={'Cadastrar'} onPress={() => { fazerCadastro() }} />
             </View>
         </SafeAreaView>
     )
