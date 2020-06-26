@@ -1,14 +1,30 @@
 import 'react-native-gesture-handler'
 import React, { useState } from "react"
-import { View, StyleSheet, SafeAreaView, Image } from "react-native"
+import { View, StyleSheet, SafeAreaView, Image, Alert } from "react-native"
 import logo from '../img/logo_size.jpg'
-import { TextInput } from "react-native-gesture-handler"
 import Botao from '../Components/Botao'
 import Input from "../Components/Input"
+import { cadastrar } from '../api/usuario'
 
 export default function TelaCadastro({ navigation }) {
     const [email, setEmail] = useState('')
     const [nome, setNome] = useState('')
+
+    const fazerCadastro = () => {
+        if (nome !== '' && email !== '') {
+            cadastrar(nome, email)
+                .then(() => {
+                    Alert.alert('Usuário cadastrado com sucesso!')
+                    navigation.navigate('login')
+                })
+                .catch(erro => {
+                    console.log('Erro: ', erro.response.data)
+                    Alert.alert("Erro ao cadastrar")
+                })
+        }else{
+            Alert.alert("Favor preencher todos os campos.")
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -19,17 +35,17 @@ export default function TelaCadastro({ navigation }) {
                 <Input
                     placeholder='   Digite o seu nome'
                     value={nome}
-                    onChangeText={ nome => { setNome(nome) }}
+                    onChangeText={nome => { setNome(nome) }}
                 />
                 <Input
                     placeholder='   Digite o seu email'
                     value={email}
                     keyboardType={'email-address'}
-                    onChangeText={ email => { setEmail(email) }}
+                    onChangeText={email => { setEmail(email) }}
                 />
             </View>
             <View style={styles.containerBotao}>
-                <Botao title={'Cadastrar'} onPress={() => {navigation.navigate('lista')}} />
+                <Botao title={'Cadastrar'} onPress={() => { fazerCadastro() }} />
             </View>
         </SafeAreaView>
     )
