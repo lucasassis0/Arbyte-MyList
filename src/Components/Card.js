@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableHighlight, Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 
 export default function Card (props) {
