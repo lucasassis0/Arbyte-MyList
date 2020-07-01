@@ -1,23 +1,67 @@
 import 'react-native-gesture-handler'
 
-import React, { useState } from "react"
-import { View, SafeAreaView, StyleSheet, Image, Text } from "react-native"
-import { ScrollView, TouchableHighlight, TextInput, TouchableOpacity } from "react-native-gesture-handler"
+import React, { useState, useEffect } from "react"
+import { View, StyleSheet, Image, Text } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler"
 import logo from '../img/logo_size.jpg'
 import plus from '../img/Plus.png'
 import Botao from '../Components/Botao'
 import Input from "../Components/Input"
 import Card from '../Components/Card'
+import { AsyncStorage } from 'react-native'
+import { connect } from 'react-redux'
+import salvarDados from '../actions/salvarDados'
+import salvarTarefas from '../actions/salvarTarefas'
+import Axios from 'axios'
+import { registraTarefa } from '../api/usuario'
+import ListaDeTarefas from '../Components/ListaDeTarefas'
 
-export default function TelaLogin({ navigation }) {
+function TelaToDoList({ navigation, dispatch, userData, tasks }) {
     const [tarefa, setTarefa] = useState('')
-    
+
+    useEffect(() => {
+        AsyncStorage.getItem('userData')
+            .then((userData) => {
+                if (userData === null) {
+                    navigation.navigate('login')
+                } else {
+                    const uData = JSON.parse(userData)
+                    dispatch(salvarDados(uData))
+                    return uData;
+                }
+            })
+            .then(data => {
+                if (!data) {
+                    return
+                }
+                return Axios.get('https://arbyte-todo-list-api.herokuapp.com/tasks', {
+                    headers: { 'Authorization': `Bearer ${data.token}` }
+                })
+            })
+            .then(response => response.data)
+            .then(tasks => {
+                dispatch(salvarTarefas(tasks))
+            })
+            .catch(() => { })
+    }, [])
+
+    const adicionaTarefaNaApi = () => {
+        registraTarefa(tarefa, userData.token)
+            .then(() => {
+                dispatch(salvarTarefas(tarefa))
+                console.log('tarefa adicionada');
+            })
+            .catch((erro) => {
+                console.log('erro: ', erro);
+            })
+    }
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.containerLogoApresentacao}>
                 <Image style={styles.logo} source={logo} />
                 <Text style={styles.apresentacao}>
-                    Olá Lucas, {'\n'} essa é a sua lista de tarefas.
+                    Olá {userData.user.fullName + ',\n'}essa é a sua lista de tarefas.
                 </Text>
             </View>
             <View style={styles.containerInputAdicionaTarefa}>
@@ -28,15 +72,13 @@ export default function TelaLogin({ navigation }) {
                 />
                 <TouchableOpacity
                     style={styles.clickAdicionar}
-                    onPress={() => console.log('adicionar tarefa')}
+                    onPress={() => adicionaTarefaNaApi()}
                 >
                     <Image style={styles.imgAdicionar} source={plus} />
                 </TouchableOpacity>
             </View>
             <View style={styles.containerTarefas}>
-                <ScrollView style={styles.scrollAtividades}>
-                    <Card tarefa={tarefa} />
-                </ScrollView>
+                <ListaDeTarefas tasks={tasks} editPress={()=>{}} deletePress={()=>{}} checkPress={()=>{}} />
             </View>
             <View style={styles.containerBotao}>
                 <Botao title={'Sair'} onPress={() => navigation.navigate('login')} />
@@ -44,6 +86,15 @@ export default function TelaLogin({ navigation }) {
         </ScrollView>
     )
 }
+
+const mapStoreToProps = store => {
+    return ({
+        userData: store.userData,
+        tasks: store.tasks
+    })
+}
+
+export default connect(mapStoreToProps)(TelaToDoList)
 
 const styles = StyleSheet.create({
     container: {
@@ -84,9 +135,6 @@ const styles = StyleSheet.create({
         flex: 3,
         marginLeft: 35,
         marginRight: 60
-    },
-    scrollAtividades: {
-        height: 250,
     },
     containerBotao: {
         flex: 1,
